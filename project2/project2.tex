@@ -59,19 +59,123 @@ $$
 u_k = u_{k-1} + s
 $$
 
+The results:
+
+\begin{center}
+	\begin{tabular}{r | c }
+		& Solution 1 \\ \hline
+		x & -4.17727096e+01\\ \hline
+		y & -1.67891941e+01\\ \hline
+		z & 6.37005956e+03\\ \hline
+		height & 0.218648080791354\\ \hline
+		d & -3.20156583e-03
+	\end{tabular} 
+\end{center}
+
 The file 1\_multivarite\_newton.py contains the implementation of the above
 
 \section{}
 
-We will subtract the last three equations $f_1, f_2, f_3$ from the first $f_1$:
+We will subtract the first equation $f_1$ from the last three $f_2, f_3, f_4$:
 \begin{align}
-f_2 - f_1= (x - A_2)^2 - (x - A_1)^2 + (y - B_2)^2 - (y - B_1)^2 + (z - C_2)^2 -
-(z - C_1)^2 - [c(t2 - d)]^2 + [c(t1 - d)]^2 = \nonumber\\
-2(A_1 - A_2)x + 2(B_1 - B_2)y + 2(C_1 - C_2)z + 2c^2(t_2 - t_1)d 
-f_3 - f_1= (x - A_3)^2 - (x - A_1)^2 + (y - B_3)^2 - (y - B_1)^2 + (z - C_3)^2 -
-(z - C_1)^2 - [c(t3 - d)]^2 + [c(t1 - d)]^2 =0 \nonumber\\
-f_4 - f_1= (x - A_4)^2 - (x - A_1)^2 + (y - B_4)^2 - (y - B_1)^2 + (z - C_4)^2 -
-(z - C_1)^2 - [c(t4 - d)]^2 + [c(t1 - d)]^2 =0 \nonumber
+f_2 - f_1 = 0 \Leftrightarrow \nonumber\\
+(x - A_2)^2 - (x - A_1)^2 + (y - B_2)^2 - (y - B_1)^2 + (z - C_2)^2 - (z - C_1)^2 - [c(t_2 - d)]^2 + [c(t_1 - d)]^2 = 0 \Leftrightarrow \nonumber\\
+2(A_1 - A_2)x + 2(B_1 - B_2)y + 2(C_1 - C_2)z + 2c^2(t_2 - t_1)d + A_2^2 - A_1^2 + B_2^2 - B_1^2 + C_2^2 - C_1^2 + c^2t_1^2 - c^2t_2^2 = 0 \nonumber\\
+\nonumber\\
+f_3 - f_1 = 0 \Leftrightarrow \nonumber\\
+(x - A_3)^2 - (x - A_1)^2 + (y - B_3)^2 - (y - B_1)^2 + (z - C_3)^2 - (z - C_1)^2 - [c(t_3 - d)]^2 + [c(t_1 - d)]^2 = 0 \Leftrightarrow \nonumber\\
+2(A_1 - A_3)x + 2(B_1 - B_3)y + 2(C_1 - C_3)z + 2c^2(t_3 - t_1)d + A_3^2 - A_1^2 + B_3^2 - B_1^2 + C_3^2 - C_1^2 + c^2t_1^2 - c^2t_3^2 = 0 \nonumber\\
+\nonumber\\
+f_4 - f_1 = 0 \Leftrightarrow \nonumber\\
+(x - A_4)^2 - (x - A_1)^2 + (y - B_4)^2 - (y - B_1)^2 + (z - C_4)^2 - (z - C_1)^2 - [c(t4 - d)]^2 + [c(t1 - d)]^2 = 0 \Leftrightarrow \nonumber\\
+2(A_1 - A_4)x + 2(B_1 - B_4)y + 2(C_1 - C_4)z + 2c^2(t_4 - t_1)d + A_4^2 - A_1^2 + B_4^2 - B_1^2 + C_4^2 - C_1^2 + c^2t_1^2 - c^2t_4^2 = 0 \nonumber\\
+\nonumber
 \end{align}
 
+From the above we define the column vectors $\vec{u}_x$, $\vec{u}_y$, $\vec{u}_z$, $\vec{u}_d$ and $\vec{w}$:
+\begin{align}
+\vec{u}_x &= \begin{bmatrix}
+2(A_1 - A_2)\\
+2(A_1 - A_3)\\
+2(A_1 - A_4)\\
+\end{bmatrix}\nonumber\\
+\vec{u}_y &= \begin{bmatrix}
+2(B_1 - B_2)\\
+2(B_1 - B_3)\\
+2(B_1 - B_4)\\
+\end{bmatrix}\nonumber\\
+\vec{u}_z &= \begin{bmatrix}
+2(C_1 - C_2)\\
+2(C_1 - C_3)\\
+2(C_1 - C_4)\\
+\end{bmatrix}\nonumber\\
+\vec{u}_d &= \begin{bmatrix}
+2c^2(t_2 - t_1)\\
+2c^2(t_3 - t_1)\\
+2c^2(t_4 - t_1)\\
+\end{bmatrix}\nonumber\\
+\vec{w} &= \begin{bmatrix}
+A_2^2 - A_1^2 + B_2^2 - B_1^2 + C_2^2 - C_1^2 + c^2t_1^2 - c^2t_2^2\\
+A_3^2 - A_1^2 + B_3^2 - B_1^2 + C_3^2 - C_1^2 + c^2t_1^2 - c^2t_3^2\\
+A_4^2 - A_1^2 + B_4^2 - B_1^2 + C_4^2 - C_1^2 + c^2t_1^2 - c^2t_4^2\\
+\end{bmatrix}\nonumber\\
+\end{align}
+
+Thus:
+
+$$
+x\vec{u}_x + y\vec{u}_y + z\vec{u}_z + d\vec{u}_d + \vec{w} = 0
+$$
+
+The determinant is $0$ when the columns are not linearly independent. Also the determinant is linear operator and we can move variables in and out of the function. We will construct equations using this property of the determinant.
+
+\begin{align}
+\det[\vec{u}_y | \vec{u}_z | x \vec{u}_x + y \vec{u}_y + z \vec{u}_z + d \vec{u}_d + \vec{w}] = 0 \Leftrightarrow \nonumber\\
+\det[\vec{u}_y | \vec{u}_z | x \vec{u}_x] + \det[\vec{u}_y | \vec{u}_z | y \vec{u}_y] + \det[\vec{u}_y | \vec{u}_z | z \vec{u}_z] + \det[\vec{u}_y | \vec{u}_z | d \vec{u}_d] + \det[\vec{u}_y | \vec{u}_z | \vec{w}] = 0 \Leftrightarrow \nonumber \\
+x\det[\vec{u}_y | \vec{u}_z | \vec{u}_x] + d\det[\vec{u}_y | \vec{u}_z | \vec{u}_d] + \det[\vec{u}_y | \vec{u}_z | \vec{w}] = 0 \Leftrightarrow \nonumber \\
+\frac{d\det[\vec{u}_y | \vec{u}_z | \vec{u}_d] + \det[\vec{u}_y | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} = x \nonumber 
+\end{align}
+
+We caclulate $y$ and $z$ using the same function:
+\begin{align}
+\frac{d\det[\vec{u}_x | \vec{u}_z | \vec{u}_d] + \det[\vec{u}_x | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} = y \nonumber \\
+\frac{d\det[\vec{u}_y | \vec{u}_x | \vec{u}_d] + \det[\vec{u}_y | \vec{u}_x | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} = z \nonumber 
+\end{align}
+
+We replace $x$, $y$ and $z$ into $f_1$:
+\begin{align}
+f_1 &= (\frac{d\det[\vec{u}_y | \vec{u}_z | \vec{u}_d] + \det[\vec{u}_y | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - A_1)^2 + (\frac{d\det[\vec{u}_x | \vec{u}_z | \vec{u}_d] + \det[\vec{u}_x | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - B_1)^2 + \nonumber \\
+&+ (\frac{d\det[\vec{u}_y | \vec{u}_x | \vec{u}_d] + \det[\vec{u}_y | \vec{u}_x | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - C_1)^2 - [c(t_1 - d)]^2 = \nonumber \\
+&= d^2(\frac{\det[\vec{u}_y | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]})^2 + 2d\frac{\det[\vec{u}_y | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]}(\frac{\det[\vec{u}_y | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - A_1) + (\frac{\det[\vec{u}_y | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - A_1)^2 + \nonumber\\
+&+ d^2(\frac{\det[\vec{u}_x | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]})^2 + 2d\frac{\det[\vec{u}_x | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]}(\frac{\det[\vec{u}_x | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - B_1) + (\frac{\det[\vec{u}_x | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - B_1)^2 + \nonumber\\
+&+ d^2(\frac{\det[\vec{u}_y | \vec{u}_x | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]})^2 + 2d\frac{\det[\vec{u}_y | \vec{u}_x | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]}(\frac{\det[\vec{u}_y | \vec{u}_x | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - C_1) + (\frac{\det[\vec{u}_y | \vec{u}_x | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - C_1)^2 + \nonumber\\
+&- c^2t_1^2 + 2c^2t_1d - c^2d^2) = 0 \nonumber
+\end{align}
+
+Thus:
+
+\begin{align}
+\alpha &= (\frac{\det[\vec{u}_y | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]})^2 + (\frac{\det[\vec{u}_x | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]})^2 + (\frac{\det[\vec{u}_y | \vec{u}_x | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]})^2 - c^2 \nonumber \\
+\beta &= 2\frac{\det[\vec{u}_y | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]}(\frac{\det[\vec{u}_y | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - A_1) + 2\frac{\det[\vec{u}_x | \vec{u}_z | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]}(\frac{\det[\vec{u}_x | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - B_1) \nonumber\\
+&+ 2\frac{\det[\vec{u}_y | \vec{u}_x | \vec{u}_d]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]}(\frac{\det[\vec{u}_y | \vec{u}_x | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - C_1) + 2c^2t_1 \nonumber\\
+\gamma &= (\frac{\det[\vec{u}_y | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - A_1)^2 + (\frac{\det[\vec{u}_x | \vec{u}_z | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - B_1)^2 + (\frac{\det[\vec{u}_y | \vec{u}_x | \vec{w}]}{\det[\vec{u}_y | \vec{u}_z | \vec{u}_x]} - C_1)^2 + c^2t_1^2 \nonumber
+\end{align}
+
+From there we compute the roots and get $2$ values for $d$:
+\begin{align}
+d_1 = \frac{-\beta - \sqrt{\beta^2 - 4\alpha\gamma}}{2\alpha}\nonumber\\
+d_2 = \frac{-\beta + \sqrt{\beta^2 - 4\alpha\gamma}}{2\alpha}\nonumber
+\end{align}
+
+We replace these values back to the functions to caclulate $x$, $y$ and $z$. The results we get are:
+\begin{center}
+\begin{tabular}{r | c | c}
+	& Solution 1 & Solution 2\\ \hline
+	x & -4.17727096e+01 & -3.97478373e+01\\ \hline
+	y & -1.67891941e+01 & -1.34274144e+02\\ \hline
+	z & 6.37005956e+03 & -9.41362455e+03\\ \hline
+	d & -3.20156583e-03 & 1.85173047e-01\\ \hline
+	height & 2.18648081e-01 & 3.04466604e+03
+\end{tabular} 
+\end{center}
 \end{document}
