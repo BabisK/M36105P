@@ -1,0 +1,77 @@
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+\documentclass[a4paper]{article}
+
+\usepackage{a4wide}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Numerical Optimization\\Project 2}
+\author{Charalampos Kaidos}
+
+\maketitle
+
+\section{}
+
+The equations to be solved are:
+\begin{align}
+f_1 = (x - A_1)^2 + (y - B_1)^2 + (z - C_1)^2 - [c(t1 - d)]^2 =0 \nonumber\\
+f_2 = (x - A_2)^2 + (y - B_2)^2 + (z - C_2)^2 - [c(t2 - d)]^2 =0 \nonumber\\
+f_3 = (x - A_3)^2 + (y - B_3)^2 + (z - C_3)^2 - [c(t3 - d)]^2 =0 \nonumber\\
+f_4 = (x - A_4)^2 + (y - B_4)^2 + (z - C_4)^2 - [c(t4 - d)]^2 =0 \nonumber
+\end{align}
+
+We will use the Newton method with initial values:
+$$
+u_0 = [x_0, y_0, z_0, d_0] = [0, 0, 6370, 0]
+$$
+
+Given that we can calculate the Jacobian matrix of $F(u)=[f_1, f_2,f_3, f_4]$:
+$$
+J(u) =
+\begin{bmatrix}
+	\frac{\partial{f_1}}{\partial{x}} & \frac{\partial{f_1}}{\partial{y}} &
+	\frac{\partial{f_1}}{\partial{z}} & \frac{\partial{f_1}}{\partial{d}} \\
+	\frac{\partial{f_2}}{\partial{x}} & \frac{\partial{f_2}}{\partial{y}} &
+	\frac{\partial{f_2}}{\partial{z}} & \frac{\partial{f_2}}{\partial{d}} \\
+	\frac{\partial{f_3}}{\partial{x}} & \frac{\partial{f_3}}{\partial{y}} &
+	\frac{\partial{f_3}}{\partial{z}} & \frac{\partial{f_3}}{\partial{d}} \\
+	\frac{\partial{f_4}}{\partial{x}} & \frac{\partial{f_4}}{\partial{y}} &
+	\frac{\partial{f_4}}{\partial{z}} & \frac{\partial{f_4}}{\partial{d}} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+	2(x-A_1) & 2(y-B_1) & 2(z-C_1) & 2c^2(t_1-d) \\
+	2(x-A_2) & 2(y-B_2) & 2(z-C_2) & 2c^2(t_2-d) \\
+	2(x-A_3) & 2(y-B_3) & 2(z-C_3) & 2c^2(t_3-d) \\
+	2(x-A_4) & 2(y-B_4) & 2(z-C_4) & 2c^2(t_4-d) \\
+\end{bmatrix}
+$$
+
+And the correction for each iteration:
+$$
+J(u)S(u)=-F(u)
+$$
+
+Finally, starting with $u_0$ we aproximate $u_k$ for $k=1,2,\dots$:
+$$
+u_k = u_{k-1} + s
+$$
+
+The file 1\_multivarite\_newton.py contains the implementation of the above
+
+\section{}
+
+We will subtract the last three equations $f_1, f_2, f_3$ from the first $f_1$:
+\begin{align}
+f_2 - f_1= (x - A_2)^2 - (x - A_1)^2 + (y - B_2)^2 - (y - B_1)^2 + (z - C_2)^2 -
+(z - C_1)^2 - [c(t2 - d)]^2 + [c(t1 - d)]^2 = \nonumber\\
+2(A_1 - A_2)x + 2(B_1 - B_2)y + 2(C_1 - C_2)z + 2c^2(t_2 - t_1)d 
+f_3 - f_1= (x - A_3)^2 - (x - A_1)^2 + (y - B_3)^2 - (y - B_1)^2 + (z - C_3)^2 -
+(z - C_1)^2 - [c(t3 - d)]^2 + [c(t1 - d)]^2 =0 \nonumber\\
+f_4 - f_1= (x - A_4)^2 - (x - A_1)^2 + (y - B_4)^2 - (y - B_1)^2 + (z - C_4)^2 -
+(z - C_1)^2 - [c(t4 - d)]^2 + [c(t1 - d)]^2 =0 \nonumber
+\end{align}
+
+\end{document}

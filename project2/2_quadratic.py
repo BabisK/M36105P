@@ -8,8 +8,9 @@ ABCD = array([[15600, 7540, 20140, 0.07074], [18760, 2750, 18610, 0.07220], [176
 # The speed of light (km/s)
 c = 299792.458
 
-U = -column_stack((-2*(ABCD[1:,0:3]-ABCD[0,0:3]), 2*(c**2)*(ABCD[1:,3]-ABCD[0,3])))
-W = (ABCD[0,0]**2) + (ABCD[0,1]**2) + (ABCD[0,2]**2) -sum(ABCD[1:,0:3]**2, axis=1) - (c**2)*(ABCD[0,3]**2) + (c**2)*(ABCD[1:,3]**2)
+#U = -column_stack((-2*(ABCD[1:,0:3]-ABCD[0,0:3]), 2*(c**2)*(ABCD[1:,3]-ABCD[0,3])))
+U = column_stack((2*(ABCD[0,0:3]-ABCD[1:,0:3]), -2*(c**2)*(ABCD[0,3]-ABCD[1:,3])))
+W = -(ABCD[0,0]**2) - (ABCD[0,1]**2) - (ABCD[0,2]**2) + sum(ABCD[1:,0:3]**2, axis=1) - (c**2)*(ABCD[1:,3]**2-ABCD[0,3]**2)
 
 k = det(U[:,0:3])
 
