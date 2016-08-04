@@ -23,7 +23,7 @@ def mutlivariate_newton(x, y, z, d, abcd = ABCD):
     i = 0
     fw = initial
     s = array([inf, inf, inf, inf])
-    while (abs(s) > 0.000000001).any():
+    while (abs(s) > 0.000000001).any() and i < 10000:
         s = solve(dF(fw[0], fw[1], fw[2], fw[3], abcd), -f(fw[0], fw[1], fw[2], fw[3], abcd))
         fw = fw + s
         i += 1

@@ -1,5 +1,4 @@
 from numpy import empty, exp, sin, power, matmul
-from scipy.linalg import det, lstsq
 from householder import householder
 from normal_equations import normal_equations
 from gram_schmidt import gram_schmidt
