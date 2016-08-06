@@ -1,43 +1,81 @@
-from numpy.linalg.linalg import dot
-from numpy import vdot
+from project3.fftmul import precompute_g, fftmul
+from numpy.linalg import norm
+from numpy import inner
+import logging
 
-def conjugate_gradient(A, x0,  b, max_iterations):
-    # Calculate initial residuals and direction vector
-    residual = b - dot(A, x0)
-    direction = residual
+def conjugate_gradient(A, x0, b, max_iterations):
+    # Calculate the FFT of the first column on the circular of A
+    g = precompute_g(A)
 
-    # Store initial solution
+    # Initial solution
     x = x0
 
+    # Initial residual and direction vector
+    residual = b - fftmul(g, x)
+    direction = residual
+
+    # Norm of the initial residual
+    norm_residual0 = norm(residual, ord=2)
+
+    # r^T*r
+    rr = inner(residual,residual)
+
     for  i in range(max_iterations):
+        if i%10000 == 0:
+            logging.info('Conjugate Gradient iteration {}, dimenstion {}'.format(i, A.shape[0]))
+
+            # If norm of the residual to norm of the initial residual is less that 10^{-7} terminate
+        if norm(residual, ord=2)/norm_residual0 < 0.0000001:
+            logging.info('Conjugate Gradient converged after {} iterations'.format(i))
+            break
+
         # Store previous residuals and direction
         old_residual = residual
         old_direction = direction
+        old_rr = rr
 
-        # Caclulate new update factor
-        a = vdot(old_residual, old_residual) / vdot(old_direction, dot(A, old_direction))
+        # Calculate A*residual using the FFT
+        Ar = fftmul(g, old_direction)
+
+        # Calculate the learning rate
+        a = old_rr / inner(old_direction, Ar)
 
         # Update solution
         x = x + a*old_direction
 
         # Update residuals
-        residual = old_residual - a*dot(A, old_direction)
+        residual = old_residual - a*Ar
+
+        # New r^T*r
+        rr = inner(residual, residual)
 
         # Update direction
-        b = vdot(residual, residual) / vdot(old_residual, old_residual)
+        b = rr / old_rr
         direction = residual + b*old_direction
-
-        # If residuals are too small, terminate the algorithm
-        if (abs(residual) < 0.000001).all():
-            break
 
     return x, i
 
-if __name__=='__main__':
-    from numpy import pi, array
+def test():
+    from time import process_time
+    from numpy.random import rand, seed
+    from numpy.linalg import solve
     from scipy.linalg import toeplitz
-    column = array([((-1)**k)*(2/(k**2)) if k > 0 else (pi**2)/3 for k in range(100)])
-    toeplitz_matrix = toeplitz(column)
-    solution, iterations = conjugate_gradient(toeplitz_matrix, list(range(10000,10100)), list(range(100)),150)
-    print(solution)
-    print(iterations)
+
+    seed(1)
+
+    dimension = 1000
+
+    A = toeplitz([dimension-i for i in range(dimension)])
+    b = rand(dimension)
+    x0 = rand(dimension)
+    time = process_time()
+    conjugate_gradient_solution, iterations = conjugate_gradient(A, x0, b, 1000000)
+    time = process_time() - time
+    exact_solution = solve(A, b)
+
+    print('CG solution:\n{}'.format(conjugate_gradient_solution))
+    print('CG iterations: {} in {}s'.format(iterations, time))
+    print('Exact solution:\n{}'.format(exact_solution))
+
+if __name__=='__main__':
+    test()
