@@ -8,9 +8,9 @@ from time import process_time
 import logging
 
 def problem5():
-    logging.basicConfig(filename='problem2.log', level=logging.DEBUG)
+    logging.basicConfig(filename='problem5.log', level=logging.DEBUG)
 
-    logging.info('Starting problem 2')
+    logging.info('Starting problem 5')
 
     lmin = 13
     lmax = 13
@@ -24,13 +24,15 @@ def problem5():
     chotime=process_time()
     L = cho_factor(matrix[0], lower= True)
     x = cho_solve(L, b[0])
-    print('Cho time: {}'.format(process_time()-chotime))
+    print('Dimension {}: Cholesky method in {}s'.format(2**13, process_time()-chotime))
 
     pcg_time = process_time()
     result_preconditioned_conjugate_gradient = (preconditioned_conjugate_gradient(matrix[0], x0[0], b[0], preconditioner[0], max_iterations))
     pcg_time = process_time() - pcg_time
 
     print('Dimension {}: PCG {} iterations in {}s'.format(2 ** 13, result_preconditioned_conjugate_gradient[1], pcg_time))
+
+    logging.info('Ending problem 5')
 
 if __name__=='__main__':
     problem5()

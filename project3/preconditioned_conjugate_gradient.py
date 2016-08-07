@@ -1,6 +1,7 @@
 from project3.fftmul import precompute_g, fftmul
 from numpy.linalg.linalg import inv, dot
 from numpy.linalg import norm
+from scipy.linalg import solve
 from numpy import inner
 import logging
 
@@ -19,6 +20,7 @@ def preconditioned_conjugate_gradient(A, x0, b, preconditioner, max_iterations):
 
     # Calculate M based on the preconditioner and get its inverse
     Minv = inv(dot(preconditioner, preconditioner.T))
+    #M = dot(preconditioner, preconditioner.T)
 
     # Initial z vector
     z = dot(Minv, residual)
@@ -72,7 +74,7 @@ def test():
 
     seed(1)
 
-    dimension = 100
+    dimension = 10
 
     A = toeplitz([dimension-i for i in range(dimension)])
     b = rand(dimension)

@@ -20,7 +20,7 @@ def problem3():
     x0 = [zeros(2**l) for l in range(lmin, lmax + 1)]
     preconditioner = [my_preconditioner(2**l) for l in range(lmin, lmax + 1)]
 
-    max_iterations = 1000
+    max_iterations = 1000000
 
     pcg_time = []
 
