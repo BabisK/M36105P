@@ -35,16 +35,16 @@ def conjugate_gradient(A, x0, b, max_iterations):
         old_rr = rr
 
         # Calculate A*residual using the FFT
-        Ar = fftmul(g, old_direction)
+        Ap = fftmul(g, old_direction)
 
         # Calculate the learning rate
-        a = old_rr / inner(old_direction, Ar)
+        a = old_rr / inner(old_direction, Ap)
 
         # Update solution
         x = x + a*old_direction
 
         # Update residuals
-        residual = old_residual - a*Ar
+        residual = old_residual - a*Ap
 
         # New r^T*r
         rr = inner(residual, residual)

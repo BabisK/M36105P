@@ -19,7 +19,7 @@ def problem2():
     matrix = [my_toeplitz(2**l) for l in range(lmin, lmax + 1)]
     b = [ones(2**l) for l in range(lmin, lmax + 1)]
     x0 = [zeros(2**l) for l in range(lmin, lmax + 1)]
-    max_iterations = 1000
+    max_iterations = 100000000
 
     gd_time = []
     cg_time = []

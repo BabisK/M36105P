@@ -10,7 +10,7 @@ import logging
 def problem4():
     logging.basicConfig(filename='problem4.log', level=logging.DEBUG)
 
-    logging.info('Starting problem 3')
+    logging.info('Starting problem 4')
 
     lmin = 10
     lmax = 13
