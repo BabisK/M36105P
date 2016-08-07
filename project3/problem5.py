@@ -1,7 +1,6 @@
 from project3.my_toeplitz import my_toeplitz
 from project3.my_preconditioner import my_preconditioner
 from project3.preconditioned_conjugate_gradient import preconditioned_conjugate_gradient
-from numpy.linalg import cholesky,solve
 from scipy.linalg import cho_solve, cho_factor
 from numpy import ones, zeros
 from time import process_time

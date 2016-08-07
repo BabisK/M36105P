@@ -25,6 +25,8 @@ def problem4():
     matrix_cond = [max(matrix_eig[i])/min(matrix_eig[i]) for i in range(len(matrix_eig))]
     precond_matrix_cond = [max(precond_matrix_eig[i]) / min(precond_matrix_eig[i]) for i in range(len(precond_matrix_eig))]
 
+    logging.info('Ending problem 4')
+
     mateig = plt.plot([2 ** i for i in range(lmin, lmax + 1)], matrix_cond, label = 'CondT')
     pmateig = plt.plot([2 ** i for i in range(lmin, lmax + 1)], precond_matrix_cond, label='CondPT')
     plt.xlabel('Matrix size (n)')

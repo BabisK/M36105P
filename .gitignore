@@ -95,3 +95,10 @@ project2/tmp/
 project2/project2.pdf
 project2/project2.synctex.gz
 project2/.texlipse
+
+project3/tmp/
+project3/project3.pdf
+project3/project3.synctex.gz
+project3/project3.aux
+
+*.png

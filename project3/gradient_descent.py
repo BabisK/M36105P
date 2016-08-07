@@ -55,7 +55,7 @@ def test():
     time = process_time()
     conjugate_gradient_solution, iterations = gradient_descent(A, x0, b, 1000000)
     time = process_time() - time
-    #exact_solution = solve(A, b)
+    exact_solution = solve(A, b)
 
     print('GD solution:\n{}'.format(conjugate_gradient_solution))
     print('GD iterations: {} in {}s'.format(iterations, time))
